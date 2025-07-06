@@ -1,13 +1,23 @@
 # Reelpedia
 Doomscroll your way to enlightenment!
 
-TBD
+**Currently still under heavy development!**
 
 ## Features
-Lorem ipsum
+TBD
 
 ## Tech Stack
-- [Prettier](https://prettier.io/docs/install)
+- [React](https://react.dev)
+- [Material UI](https://mui.com/material-ui)
+- [React Router](https://reactrouter.com)
+- [Virtua](https://github.com/inokawa/virtua)
+
+## Development Stack
+- [Vite](https://vite.dev)
+- [Storybook](https://storybook.js.org)
+- [Husky](https://typicode.github.io/husky)
+- [Prettier](https://prettier.io)
+- [ESLint](https://eslint.org)
 
 ## Development
 In the `src` directory, run the following commands:
