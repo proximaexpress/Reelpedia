@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import ArticleCard from "./article-card";
 
 const meta = {
+  title: "Molecules/Article Card",
   component: ArticleCard,
 } satisfies Meta<typeof ArticleCard>;
 
