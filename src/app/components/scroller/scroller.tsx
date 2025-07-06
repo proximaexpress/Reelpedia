@@ -36,6 +36,9 @@ async function fetchItems(
     .get(`${apiURL}?${searchParams.toString()}`)
     .json<WikipediaRandomAPIResponse>();
   const articleTitles = randomAPIResponse.query.random.map((a) => a.title);
+  for (const v of articleTitles) {
+    articles[v] = { ...articles[v], title: v };
+  }
 
   // Fetch the article details
   searchParams = new URLSearchParams({
@@ -120,8 +123,8 @@ export default function Scroller() {
           if (
             !fetching.current &&
             scrollerVListRef.current.findEndIndex() +
-              Math.floor(FETCH_BATCH_SIZE / 2) >
-              items.length
+            Math.floor(FETCH_BATCH_SIZE / 2) >
+            items.length
           ) {
             // Lock to prevent parallel fetches
             fetching.current = true;
