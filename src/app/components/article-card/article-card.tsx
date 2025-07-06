@@ -1,9 +1,11 @@
 import { Box, Stack, Typography } from "@mui/material";
 
+import ImageNotSupportedOutlinedIcon from "@mui/icons-material/ImageNotSupportedOutlined";
+
 export interface Article {
   title: string;
   extract: string;
-  image: string;
+  image: string | undefined;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -34,12 +36,23 @@ export default function ArticleCard(props: ArticleCardProps) {
           position: "absolute",
           top: 0,
           left: 0,
+          display: "flex",
+          justifyContent: "center",
           backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
-          backgroundImage: `url(${props.image})`,
+          backgroundImage: `url(${props?.image ? props.image : ""})`,
         }}
-      />
+      >
+        {!props?.image && (
+          <ImageNotSupportedOutlinedIcon
+            sx={{
+              fontSize: "5em",
+              my: "25%",
+            }}
+          />
+        )}
+      </Box>
 
       {/* Content banner */}
       <Stack

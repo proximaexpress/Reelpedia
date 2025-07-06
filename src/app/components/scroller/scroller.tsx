@@ -1,28 +1,84 @@
-import ArticleCard from "../article-card/article-card";
 import { Box } from "@mui/material";
+import ky from "ky";
 import { VList, type VListHandle } from "virtua";
 import { useEffect, useRef, useState } from "react";
 
-import { type JSX } from "react";
+import ArticleCard from "../article-card/article-card";
+
+import type { Article } from "../article-card/article-card";
+import type { JSX } from "react";
+import type {
+  WikipediaExtractAPIResponse,
+  WikipediaImageAPIResponse,
+  WikipediaRandomAPIResponse,
+} from "../../types/api";
 
 async function fetchItems(
   start: number,
   fetchBatchSize: number,
 ): Promise<JSX.Element[]> {
   // TODO extract into a util hook
-  const articles: JSX.Element[] = [];
+  const articleCardElements: JSX.Element[] = [];
+  const articles: Record<string, Article> = {};
 
-  for (let i = 0; i < fetchBatchSize; i++) {
-    articles.push(
-      <ArticleCard
-        key={start + i}
-        title="Lorem ipsum"
-        extract="The quick brown fox jumped"
-        image="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/SeagullOverWave.jpg/960px-SeagullOverWave.jpg"
-      />,
-    );
+  // Fetch a list of random articles
+  const apiURL = "https://en.wikipedia.org/w/api.php";
+
+  let searchParams = new URLSearchParams({
+    origin: "*",
+    format: "json",
+    action: "query",
+    list: "random",
+    rnnamespace: "0",
+    rnlimit: fetchBatchSize.toString(),
+  });
+  const randomAPIResponse = await ky
+    .get(`${apiURL}?${searchParams.toString()}`)
+    .json<WikipediaRandomAPIResponse>();
+  const articleTitles = randomAPIResponse.query.random.map((a) => a.title);
+
+  // Fetch the article details
+  searchParams = new URLSearchParams({
+    origin: "*",
+    format: "json",
+    action: "query",
+    prop: "extracts",
+    titles: articleTitles.join("|"),
+    exlimit: "20",
+    exsentences: "3",
+    exintro: "true",
+    explaintext: "true",
+  });
+  const extractAPIResponse = await ky
+    .get(`${apiURL}?${searchParams.toString()}`)
+    .json<WikipediaExtractAPIResponse>();
+  for (const [, v] of Object.entries(extractAPIResponse.query.pages)) {
+    articles[v.title] = { ...articles[v.title], extract: v.extract };
   }
-  return articles;
+
+  // Fetch the article images
+  searchParams = new URLSearchParams({
+    origin: "*",
+    format: "json",
+    action: "query",
+    prop: "pageimages",
+    titles: articleTitles.join("|"),
+    pithumbsize: "600",
+    piprop: "thumbnail|name|original",
+  });
+  const imageAPIResponse = await ky
+    .get(`${apiURL}?${searchParams.toString()}`)
+    .json<WikipediaImageAPIResponse>();
+  for (const [, v] of Object.entries(imageAPIResponse.query.pages)) {
+    articles[v.title] = { ...articles[v.title], image: v?.thumbnail?.source };
+  }
+
+  // Compose ArticleCard and store
+  for (const [k, v] of Object.entries(articles)) {
+    articleCardElements.push(<ArticleCard key={k.toLowerCase()} {...v} />);
+  }
+
+  return articleCardElements;
 }
 
 export default function Scroller() {
