@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 
-interface Article {
+export interface Article {
   title: string;
   extract: string;
   image: string;
@@ -17,8 +17,8 @@ export default function ArticleCard(props: ArticleCardProps) {
         width: "100vw",
         maxWidth: "sm",
         p: 0,
-        position: "absolute",
-        overflow: "hidden",
+        position: "relative",
+        scrollSnapAlign: "start",
 
         "@media screen and (orientation: landscape)": {
           height: "calc(100vh - 96px)",
@@ -55,8 +55,9 @@ export default function ArticleCard(props: ArticleCardProps) {
         <Box
           sx={{
             p: 3,
-            backgroundImage: "linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.15))",
-            backdropFilter: "blur(4px)"
+            backgroundImage:
+              "linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.15))",
+            backdropFilter: "blur(4px)",
           }}
         >
           <Typography
@@ -69,10 +70,7 @@ export default function ArticleCard(props: ArticleCardProps) {
             {props.title}
           </Typography>
 
-          <Typography
-            variant="body2"
-            color="white"
-          >
+          <Typography variant="body2" color="white">
             {props.extract}
           </Typography>
         </Box>
