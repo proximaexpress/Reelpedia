@@ -7,11 +7,7 @@ import ArticleCard from "../article-card/article-card";
 
 import type { Article } from "../article-card/article-card";
 import type { JSX } from "react";
-import type {
-  WikipediaExtractAPIResponse,
-  WikipediaImageAPIResponse,
-  WikipediaRandomAPIResponse,
-} from "../../types/api";
+import type { WikipediaQueryAPIResponse } from "../../types/api";
 
 async function fetchItems(
   start: number,
@@ -24,56 +20,36 @@ async function fetchItems(
   // Fetch a list of random articles
   const apiURL = "https://en.wikipedia.org/w/api.php";
 
-  let searchParams = new URLSearchParams({
+  const searchParams = new URLSearchParams({
     origin: "*",
     format: "json",
     action: "query",
-    list: "random",
-    rnnamespace: "0",
-    rnlimit: fetchBatchSize.toString(),
-  });
-  const randomAPIResponse = await ky
-    .get(`${apiURL}?${searchParams.toString()}`)
-    .json<WikipediaRandomAPIResponse>();
-  const articleTitles = randomAPIResponse.query.random.map((a) => a.title);
-  for (const v of articleTitles) {
-    articles[v] = { ...articles[v], title: v };
-  }
-
-  // Fetch the article details
-  searchParams = new URLSearchParams({
-    origin: "*",
-    format: "json",
-    action: "query",
-    prop: "extracts",
-    titles: articleTitles.join("|"),
+    prop: "info|extracts|pageimages",
+    generator: "random",
+    grnnamespace: "0",
+    grnlimit: fetchBatchSize.toString(),
+    pithumbsize: "600",
+    piprop: "thumbnail|name|original",
     exlimit: "20",
     exsentences: "3",
     exintro: "true",
     explaintext: "true",
   });
-  const extractAPIResponse = await ky
+  const randomAPIResponse = await ky
     .get(`${apiURL}?${searchParams.toString()}`)
-    .json<WikipediaExtractAPIResponse>();
-  for (const [, v] of Object.entries(extractAPIResponse.query.pages)) {
-    articles[v.title] = { ...articles[v.title], extract: v.extract };
-  }
+    .json<WikipediaQueryAPIResponse>();
+  for (const [, v] of Object.entries(randomAPIResponse.query.pages)) {
+    // Skip over articles without images
+    if (!v?.thumbnail) {
+      continue;
+    }
 
-  // Fetch the article images
-  searchParams = new URLSearchParams({
-    origin: "*",
-    format: "json",
-    action: "query",
-    prop: "pageimages",
-    titles: articleTitles.join("|"),
-    pithumbsize: "600",
-    piprop: "thumbnail|name|original",
-  });
-  const imageAPIResponse = await ky
-    .get(`${apiURL}?${searchParams.toString()}`)
-    .json<WikipediaImageAPIResponse>();
-  for (const [, v] of Object.entries(imageAPIResponse.query.pages)) {
-    articles[v.title] = { ...articles[v.title], image: v?.thumbnail?.source };
+    // Store article
+    articles[v.title] = {
+      title: v.title,
+      extract: v.extract,
+      image: v?.thumbnail?.source,
+    };
   }
 
   // Compose ArticleCard and store
@@ -85,7 +61,7 @@ async function fetchItems(
 }
 
 export default function Scroller() {
-  const FETCH_BATCH_SIZE = 5;
+  const FETCH_BATCH_SIZE = 20; // Limited by max extracts returned in a single request
   const scrollerVListRef = useRef<VListHandle>(null);
   const fetching = useRef<boolean>(true);
   const [items, setItems] = useState<JSX.Element[]>([]);
@@ -123,8 +99,8 @@ export default function Scroller() {
           if (
             !fetching.current &&
             scrollerVListRef.current.findEndIndex() +
-            Math.floor(FETCH_BATCH_SIZE / 2) >
-            items.length
+              Math.floor(FETCH_BATCH_SIZE / 2) >
+              items.length
           ) {
             // Lock to prevent parallel fetches
             fetching.current = true;

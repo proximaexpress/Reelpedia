@@ -1,53 +1,31 @@
-interface WikipediaBaseAPIResponse {
+interface WikipediaQueryAPIResponse {
   batchcomplete?: string;
   continue?: {
-    rncontinue?: string;
+    grncontinue?: string;
     continue?: string;
   };
-}
-
-interface WikipediaRandomAPIResponse extends WikipediaBaseAPIResponse {
-  query: {
-    random: WikipediaArticleMetadata[];
-  };
-}
-
-interface WikipediaExtractAPIResponse extends WikipediaBaseAPIResponse {
   query: {
     pages: {
-      [pageId: string]: WikipediaArticleExtract;
+      [pageId: string]: WikipediaArticle;
     };
   };
 }
 
-interface WikipediaImageAPIResponse extends WikipediaBaseAPIResponse {
-  query: {
-    pages: {
-      [pageId: string]: WikipediaArticleImage;
-    };
-  };
-}
-
-interface WikipediaArticleImage {
+interface WikipediaArticle {
   pageid: number;
   ns: number;
   title: string;
+  contentmodel: string;
+  pagelanguage: string;
+  pagelanguagehtmlcode: string;
+  pagelanguagedir: string;
+  touched: string;
+  lastrevid: number;
+  length: number;
+  extract: string;
   thumbnail?: WikipediaImage;
   original?: WikipediaImage;
   pageimage?: string;
-}
-
-interface WikipediaArticleExtract {
-  pageid: number;
-  ns: number;
-  title: string;
-  extract: string;
-}
-
-interface WikipediaArticleMetadata {
-  id: number;
-  ns: number;
-  title: string;
 }
 
 interface WikipediaImage {
@@ -56,8 +34,4 @@ interface WikipediaImage {
   height: number;
 }
 
-export type {
-  WikipediaExtractAPIResponse,
-  WikipediaImageAPIResponse,
-  WikipediaRandomAPIResponse,
-};
+export type { WikipediaQueryAPIResponse };
