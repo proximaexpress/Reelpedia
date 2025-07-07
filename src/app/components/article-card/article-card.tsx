@@ -1,6 +1,7 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 
 import ImageNotSupportedOutlinedIcon from "@mui/icons-material/ImageNotSupportedOutlined";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 export interface Article {
   title: string;
@@ -9,7 +10,7 @@ export interface Article {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface ArticleCardProps extends Article {}
+interface ArticleCardProps extends Article { }
 
 export default function ArticleCard(props: ArticleCardProps) {
   return (
@@ -86,7 +87,7 @@ export default function ArticleCard(props: ArticleCardProps) {
           <Typography
             variant="body2"
             sx={{
-              //maxHeight: "7.5em",
+              mb: 2,
               color: "white",
               display: "-webkit-box",
               "-webkit-line-clamp": "6",
@@ -96,6 +97,21 @@ export default function ArticleCard(props: ArticleCardProps) {
           >
             {props.extract}
           </Typography>
+
+          <Button
+            variant="text"
+            size="small"
+            endIcon={<OpenInNewIcon />}
+            sx={{
+              color: "white",
+              marginLeft: "-5px" // Align the button with the text
+            }}
+            onClick={() => {
+              window.open(`https://en.wikipedia.org/wiki/${props.title}`, '_blank')?.focus();
+            }}
+          >
+            Open
+          </Button>
         </Box>
       </Stack>
     </Box>
