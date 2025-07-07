@@ -28,6 +28,9 @@ npm install
 # Generate types
 npm run typecheck
 
+# Setup pre-commit
+npm run prepare
+
 # Run development server
 npm run dev
 ```
