@@ -83,7 +83,17 @@ export default function ArticleCard(props: ArticleCardProps) {
             {props.title}
           </Typography>
 
-          <Typography variant="body2" color="white">
+          <Typography
+            variant="body2"
+            sx={{
+              //maxHeight: "7.5em",
+              color: "white",
+              display: "-webkit-box",
+              "-webkit-line-clamp": "6",
+              "-webkit-box-orient": "vertical",
+              overflow: "hidden",
+            }}
+          >
             {props.extract}
           </Typography>
         </Box>
