@@ -8,7 +8,7 @@ export function useWikipedia() {
   const API_URL = "https://en.wikipedia.org/w/api.php";
   const FETCH_BATCH_SIZE = 20; // Limited by max extracts returned in a single request
 
-  const [articles, setArticles] = useState<Record<string, Article>>({})
+  const [articles, setArticles] = useState<Record<string, Article>>({});
   const [fetching, setFetching] = useState<boolean>(false);
 
   const fetchWikipediaArticles = async () => {
@@ -61,6 +61,6 @@ export function useWikipedia() {
   return {
     articles,
     fetching,
-    fetchWikipediaArticles
+    fetchWikipediaArticles,
   };
 }

@@ -10,11 +10,7 @@ export default function Scroller() {
   const FETCH_BATCH_SIZE = 20; // Limited by max extracts returned in a single request
   const scrollerVListRef = useRef<VListHandle>(null);
 
-  const {
-    articles,
-    fetching,
-    fetchWikipediaArticles
-  } = useWikipedia();
+  const { articles, fetching, fetchWikipediaArticles } = useWikipedia();
 
   useEffect(() => {
     fetchWikipediaArticles();
@@ -55,12 +51,9 @@ export default function Scroller() {
           }
         }}
       >
-        {Object.entries(articles).map(([k, v]) =>
-          <ArticleCard
-            key={k}
-            {...v}
-          />
-        )}
+        {Object.entries(articles).map(([k, v]) => (
+          <ArticleCard key={k} {...v} />
+        ))}
       </VList>
     </Box>
   );
