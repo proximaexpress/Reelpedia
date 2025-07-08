@@ -1,4 +1,5 @@
-name: Build, test and deploy Reelpedia to Github Pages
+# Build, test and deploy Reelpedia to Github Pages
+name: CI/CD to Github Pages PROD
 
 on:
   push:
@@ -56,9 +57,15 @@ jobs:
     - name: Display structure of downloaded files
       run: ls -R
 
+    - name: Configure git
+      working-directory: ./src
+      run: |
+        git config user.name github-actions[bot]
+        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+        git remote set-url origin https://oauth:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+
     - name: Deploy to Github Pages
       working-directory: ./src
       run: |
         npm install
-        git remote set-url origin https://oauth:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
         npm run deploy
