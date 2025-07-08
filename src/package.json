@@ -1,5 +1,6 @@
 {
   "name": "reelpedia",
+  "homepage": "https://proximaexpress.github.io/Reelpedia",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,7 +12,8 @@
     "typecheck": "react-router typegen && tsc",
     "eslint": "eslint . --ignore-pattern \".react-router\"",
     "prettier": "prettier . --write",
-    "prepare": "cd .. && husky ./src/.husky"
+    "prepare": "cd .. && husky ./src/.husky",
+    "deploy": "gh-pages --dist ./build/client"
   },
   "lint-staged": {
     "**/*": [
@@ -52,6 +54,7 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-storybook": "^9.0.15",
+    "gh-pages": "^6.3.0",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
