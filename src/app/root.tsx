@@ -1,4 +1,5 @@
 import React from "react";
+import { Box, Typography } from "@mui/material";
 import {
   Links,
   Meta,
@@ -7,6 +8,8 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
 } from "react-router";
+
+import GradientCircularProgress from "./components/gradient-circular-progress/gradient-circular-progress";
 
 import type { Route } from "./+types/root";
 
@@ -48,6 +51,32 @@ export default function App() {
     <React.StrictMode>
       <Outlet />
     </React.StrictMode>
+  );
+}
+
+export function HydrateFallback() {
+  return (
+    <Box
+      component="main"
+      sx={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#0f0f0f",
+      }}
+    >
+      <Typography
+        variant="h6"
+        sx={{
+          color: "white",
+        }}
+      >
+        Loading
+      </Typography>
+      <GradientCircularProgress />
+    </Box>
   );
 }
 
