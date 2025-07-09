@@ -1,9 +1,13 @@
 # Reelpedia
-Doomscroll your way to enlightenment!
+[![CI/CD to AWS](https://github.com/proximaexpress/Reelpedia/actions/workflows/aws-s3.yml/badge.svg)](https://github.com/proximaexpress/Reelpedia/actions/workflows/aws-s3.yml)
+Doomscroll your way to enlightenment! Check out the latest version over at [Reelpedia](https://www.reelpedia.com/)!
 
 **Currently still under heavy development!**
 
 ## Features
+- Infinitely scroll through Wikipedia articles!
+- More to come!
+
 TBD
 
 ## Tech Stack
@@ -18,6 +22,7 @@ TBD
 - [Husky](https://typicode.github.io/husky)
 - [Prettier](https://prettier.io)
 - [ESLint](https://eslint.org)
+- [Github Actions](https://docs.github.com/en/actions)
 
 ## Development
 In the `src` directory, run the following commands:
