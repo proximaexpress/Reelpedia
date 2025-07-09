@@ -1,4 +1,4 @@
-name: CI/CD to Github Pages
+name: CI/CD to AWS
 
 on:
   # Runs on pushes targeting the default branch

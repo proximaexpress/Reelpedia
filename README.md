@@ -1,11 +1,12 @@
 # Reelpedia
 [![CI/CD to AWS](https://github.com/proximaexpress/Reelpedia/actions/workflows/aws-s3.yml/badge.svg)](https://github.com/proximaexpress/Reelpedia/actions/workflows/aws-s3.yml)
+
 Doomscroll your way to enlightenment! Check out the latest version over at [Reelpedia](https://www.reelpedia.com/)!
 
 **Currently still under heavy development!**
 
 ## Features
-- Infinitely scroll through Wikipedia articles!
+- Wikipedia articles delivered to the Reels way!
 - More to come!
 
 TBD
