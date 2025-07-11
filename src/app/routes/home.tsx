@@ -5,6 +5,8 @@ import Scroller from "~/components/scroller/scroller";
 import type { JSX } from "react";
 import type { Route } from "./+types/home";
 
+import "~/components/scroller/scroller.css";
+
 // eslint-disable-next-line no-empty-pattern
 export function meta({}: Route.MetaArgs) {
   return [
@@ -27,15 +29,9 @@ export default function Home(): JSX.Element {
       }}
     >
       <Box
+        className="scroller-player"
         sx={{
-          height: "100vh",
-          width: "100vw",
-          maxWidth: "sm",
-          overflow: "hidden",
-
           "@media screen and (orientation: landscape)": {
-            height: "calc(100vh - 96px)",
-            width: "calc((100vh - 96px)*0.5625)",
             borderRadius: 4,
           },
         }}

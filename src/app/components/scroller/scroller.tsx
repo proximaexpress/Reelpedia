@@ -21,8 +21,6 @@ export default function Scroller() {
       sx={{
         height: "100vh",
         width: "100vw",
-        maxWidth: "sm",
-        p: 0,
       }}
     >
       <VList
