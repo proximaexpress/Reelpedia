@@ -69,10 +69,13 @@ export default function SavedArticleModal(
           sx={{
             py: 2,
             border: "1px solid",
-            borderColor: theme.palette.divider,
-            borderRadius: 4,
-            backgroundColor: theme.palette.background.paper,
-            boxShadow: 24,
+            backgroundColor: theme.palette.background.default,
+
+            "@media screen and (orientation: landscape)": {
+              borderColor: theme.palette.divider,
+              borderRadius: 4,
+              boxShadow: 24,
+            },
           }}
         >
           {/* Header */}
