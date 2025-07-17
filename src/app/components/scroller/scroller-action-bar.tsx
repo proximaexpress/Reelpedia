@@ -1,7 +1,6 @@
 import React from "react";
 
 import {
-  Box,
   IconButton,
   Popover,
   Stack,
@@ -47,12 +46,13 @@ export default function ScrollerActionBar(props: ScrollerActionBarProps) {
       direction="column"
       spacing={2}
       sx={{
-        width: "56px",
+        width: "80px",
         height: "100vh",
-        overflow: "hidden",
         px: 1,
+        pt: "5vh",
+        overflow: "hidden",
 
-        "@media screen and(orientation: landscape)": {
+        "@media screen and (orientation: landscape)": {
           height: "calc(100vh - 96px)",
         },
 
@@ -67,18 +67,25 @@ export default function ScrollerActionBar(props: ScrollerActionBarProps) {
             alignContent: "center",
           }}
         >
-          <Box
+          <Stack
             aria-owns={open ? "bookmark-hover-popover" : undefined}
             aria-haspopup="true"
+            sx={{
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
             onMouseEnter={handlePopoverOpen}
             onMouseLeave={handlePopoverClose}
           >
             <IconButton
               title="delete"
+              size="large"
               aria-label="delete"
               sx={{
                 position: "relative",
                 overflow: "hidden",
+                zIndex: "1",
 
                 "&:before": {
                   content: '""',
@@ -88,11 +95,11 @@ export default function ScrollerActionBar(props: ScrollerActionBarProps) {
                   right: 0,
                   bottom: 0,
                   borderRadius: "50%",
-                  backgroundColor:
+                  background:
                     theme.palette.mode == "dark"
-                      ? "rgba(128, 128, 128, 0.5)"
-                      : "rgba(128, 128, 128, 0.5)",
-                  filter: "blur(8px)",
+                      ? "rgba(128, 128, 128, 0.75)"
+                      : "rgba(128, 128, 128, 0.75)",
+                  filter: "blur(16px)",
                   zIndex: -1,
                 },
               }}
@@ -119,6 +126,7 @@ export default function ScrollerActionBar(props: ScrollerActionBarProps) {
               variant="subtitle2"
               sx={{
                 textAlign: "center",
+                textShadow: "0 1px 2px rgba(0,0,0,0.8)",
               }}
             >
               Save
@@ -144,7 +152,7 @@ export default function ScrollerActionBar(props: ScrollerActionBarProps) {
                 Save this article
               </Typography>
             </Popover>
-          </Box>
+          </Stack>
         </Stack>
       )}
     </Stack>

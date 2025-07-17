@@ -34,9 +34,6 @@ export default function Home(): JSX.Element {
     >
       <ScrollerActionBar
         sx={{
-          height: "calc(100vh - 96px)",
-          mt: "5%",
-
           "@media screen and (orientation: portrait)": {
             position: "absolute",
             top: 0,
