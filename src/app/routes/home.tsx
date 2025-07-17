@@ -1,6 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 
 import Scroller from "~/components/scroller/scroller";
+import ScrollerActionBar from "~/components/scroller/scroller-action-bar";
 
 import type { JSX } from "react";
 import type { Route } from "./+types/home";
@@ -16,6 +17,8 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home(): JSX.Element {
+  const theme = useTheme();
+
   return (
     <Box
       component="section"
@@ -23,11 +26,14 @@ export default function Home(): JSX.Element {
         height: "100vh",
         width: "100vw",
         display: "flex",
+        flexDirection: "row-reverse",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#0f0f0f",
+        backgroundColor: theme.palette.background.default,
       }}
     >
+      <ScrollerActionBar />
+
       <Box
         className="scroller-player"
         sx={{

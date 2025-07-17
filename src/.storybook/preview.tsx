@@ -2,8 +2,12 @@ import { useMemo } from "react";
 
 import type { Preview } from "@storybook/react-vite";
 
+import { Provider } from "react-redux";
+
 import CssBaseline from "@mui/material/CssBaseline";
 import { type Theme, ThemeProvider } from "@mui/material/styles";
+
+import { store } from "../app/store";
 
 import { darkTheme, lightTheme } from "../app/themes/themes";
 
@@ -18,8 +22,8 @@ export const globalTypes = {
       icon: "paintbrush",
       dynamicTitle: true,
       items: [
-        { value: "light", left: "☀️", title: "Light mode" },
-        { value: "dark", left: "🌙", title: "Dark mode" },
+        { value: "light", right: "☀️", title: "Light mode" },
+        { value: "dark", right: "🌙", title: "Dark mode" },
       ],
     },
   },
@@ -43,10 +47,12 @@ export const withMuiTheme = (Story, context) => {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Story />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Story />
+      </ThemeProvider>
+    </Provider>
   );
 };
 

@@ -16,6 +16,10 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 
+import { useAppDispatch, useAppSelector } from "~/hooks/useStore";
+
+import { remove } from "~/features/saved/savedSlice";
+
 import type { Article } from "../article-card/article-card";
 import type { JSX } from "react";
 
@@ -23,7 +27,6 @@ import "~/components/scroller/scroller.css";
 
 interface SavedArticleModalProps {
   active: boolean;
-  savedArticles: Article[];
 }
 
 const CardContentNoBottomPadding = styled(CardContent)(`
@@ -35,9 +38,12 @@ const CardContentNoBottomPadding = styled(CardContent)(`
 export default function SavedArticleModal(
   props: SavedArticleModalProps,
 ): JSX.Element {
-  const { active, savedArticles } = props;
+  const { active } = props;
 
   const theme = useTheme();
+
+  const savedArticles: Article[] = useAppSelector((state) => state.saved.value);
+  const dispatch = useAppDispatch();
 
   return (
     <Modal
@@ -121,12 +127,15 @@ export default function SavedArticleModal(
                 <Box key={a.title} sx={{ position: "relative" }}>
                   <IconButton
                     color="primary"
-                    aria-label="close modal"
+                    aria-label="remove saved article"
                     sx={{
                       position: "absolute",
                       top: 0,
                       right: 0,
                       zIndex: "1",
+                    }}
+                    onClick={() => {
+                      dispatch(remove(a));
                     }}
                   >
                     <CloseIcon />
@@ -141,6 +150,14 @@ export default function SavedArticleModal(
                       borderColor: theme.palette.divider,
                       borderRadius: 4,
                       backgroundColor: theme.palette.background.paper,
+                    }}
+                    onClick={() => {
+                      window
+                        .open(
+                          `https://en.wikipedia.org/wiki/${a.title}`,
+                          "_blank",
+                        )
+                        ?.focus();
                     }}
                   >
                     <Grid container spacing={0}>
