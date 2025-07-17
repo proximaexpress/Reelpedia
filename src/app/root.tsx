@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import {
   Links,
   Meta,
@@ -67,6 +67,12 @@ export default function App() {
   );
 }
 
+export async function clientLoader() {
+  // TODO: replace with RTK Query
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  await sleep(300);
+}
+
 export function HydrateFallback() {
   return (
     <Box
@@ -80,15 +86,23 @@ export function HydrateFallback() {
         backgroundColor: "#0f0f0f",
       }}
     >
-      <Typography
-        variant="h6"
+      <Stack
+        spacing={2}
         sx={{
-          color: "white",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        Loading
-      </Typography>
-      <GradientCircularProgress />
+        <Typography
+          variant="h6"
+          sx={{
+            color: "white",
+          }}
+        >
+          Loading
+        </Typography>
+        <GradientCircularProgress />
+      </Stack>
     </Box>
   );
 }
