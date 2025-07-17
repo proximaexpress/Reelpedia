@@ -1,0 +1,11 @@
+.scroller-player {
+  height: 100vh;
+  width: 100vw;
+  max-width: sm;
+  overflow: hidden;
+
+  @media screen and (orientation: landscape) {
+    height: calc(100vh - 96px);
+    width: calc((100vh - 96px) * 0.5625);
+  }
+}

@@ -3,6 +3,8 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import ImageNotSupportedOutlinedIcon from "@mui/icons-material/ImageNotSupportedOutlined";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
+import "~/components/scroller/scroller.css";
+
 export interface Article {
   title: string;
   extract: string;
@@ -15,18 +17,10 @@ interface ArticleCardProps extends Article {}
 export default function ArticleCard(props: ArticleCardProps) {
   return (
     <Box
+      className="scroller-player"
       sx={{
-        height: "100vh",
-        width: "100vw",
-        maxWidth: "sm",
-        p: 0,
         position: "relative",
         scrollSnapAlign: "start",
-
-        "@media screen and (orientation: landscape)": {
-          height: "calc(100vh - 96px)",
-          width: "calc((100vh - 96px)*0.5625)",
-        },
       }}
     >
       {/* Background image */}

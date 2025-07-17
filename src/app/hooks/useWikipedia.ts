@@ -8,7 +8,10 @@ export function useWikipedia() {
   const API_URL = "https://en.wikipedia.org/w/api.php";
   const FETCH_BATCH_SIZE = 20; // Limited by max extracts returned in a single request
 
-  const [articles, setArticles] = useState<Record<string, Article>>({});
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [articlesViewed, setArticlesViewed] = useState<Record<string, Article>>(
+    {},
+  );
   const [fetching, setFetching] = useState<boolean>(false);
 
   const fetchWikipediaArticles = async () => {
@@ -34,7 +37,8 @@ export function useWikipedia() {
       exintro: "true",
       explaintext: "true",
     });
-    ky.get(`${API_URL}?${searchParams.toString()}`)
+    const fetchedArticles = await ky
+      .get(`${API_URL}?${searchParams.toString()}`)
       .json<WikipediaQueryAPIResponse>()
       .then((randomAPIResponse) => {
         const a: Record<string, Article> = {};
@@ -51,11 +55,22 @@ export function useWikipedia() {
           };
         }
 
-        // Store article
-        setArticles((prev) => ({ ...prev, ...a }));
+        return a;
       })
-      .catch((err) => console.error(err))
-      .finally(() => setFetching(false));
+      .catch((err) => console.error(err));
+
+    // Add unviewed articles and update viewed set
+    if (fetchedArticles) {
+      const unviewedArticles = Object.entries(fetchedArticles)
+        .filter(([k]) => !(k in articlesViewed))
+        .map(([, v]) => v);
+      setArticles((prev) => [...prev, ...unviewedArticles]);
+      setArticlesViewed((prev) => ({ ...prev, ...fetchedArticles }));
+    }
+
+    setFetching(false);
+
+    return fetchedArticles;
   };
 
   return {

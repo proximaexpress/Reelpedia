@@ -1,5 +1,10 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+
+import { Provider } from "react-redux";
+
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import { Box, Stack, Typography } from "@mui/material";
 import {
   Links,
   Meta,
@@ -9,7 +14,10 @@ import {
   isRouteErrorResponse,
 } from "react-router";
 
+import { store } from "./store";
+
 import GradientCircularProgress from "./components/gradient-circular-progress/gradient-circular-progress";
+import { darkTheme } from "./themes/themes";
 
 import type { Route } from "./+types/root";
 
@@ -49,9 +57,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <React.StrictMode>
-      <Outlet />
+      <Provider store={store}>
+        <ThemeProvider theme={darkTheme}>
+          <CssBaseline enableColorScheme />
+          <Outlet />
+        </ThemeProvider>
+      </Provider>
     </React.StrictMode>
   );
+}
+
+export async function clientLoader() {
+  // TODO: replace with RTK Query
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  await sleep(300);
 }
 
 export function HydrateFallback() {
@@ -67,15 +86,23 @@ export function HydrateFallback() {
         backgroundColor: "#0f0f0f",
       }}
     >
-      <Typography
-        variant="h6"
+      <Stack
+        spacing={2}
         sx={{
-          color: "white",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        Loading
-      </Typography>
-      <GradientCircularProgress />
+        <Typography
+          variant="h6"
+          sx={{
+            color: "white",
+          }}
+        >
+          Loading
+        </Typography>
+        <GradientCircularProgress />
+      </Stack>
     </Box>
   );
 }
