@@ -54,6 +54,12 @@ export default function SavedArticleModal(
   return (
     <Modal
       {...props}
+      onClose={() => {
+        setModalActive((prev) => ({
+          ...prev,
+          savedArticleModal: !prev?.savedArticleModal,
+        }));
+      }}
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -86,9 +92,10 @@ export default function SavedArticleModal(
           className="scroller-player"
           sx={{
             py: 2,
-            backgroundColor: theme.palette.background.default,
+            backgroundColor: theme.palette.background.paper,
 
             "@media screen and (orientation: landscape)": {
+              width: "calc((100vw - 96px) * 0.5625) !important",
               borderColor: theme.palette.divider,
               borderRadius: 4,
               boxShadow: 24,
