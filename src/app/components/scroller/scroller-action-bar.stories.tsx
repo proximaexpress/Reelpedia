@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { useEffect } from "react";
 
+import { Box } from "@mui/material";
+
 import { useAppDispatch } from "~/hooks/useStore";
 
 import ScrollerActionBar from "./scroller-action-bar";
@@ -31,7 +33,17 @@ export const Default: Story = {
       useEffect(() => {
         dispatch(display(mockedDisplayedArticle));
       }, []);
-      return <Story />;
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Story />
+        </Box>
+      );
     },
   ],
 };
