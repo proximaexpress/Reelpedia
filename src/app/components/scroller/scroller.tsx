@@ -10,7 +10,18 @@ import { useAppDispatch } from "~/hooks/useStore";
 
 import ArticleCard from "../article-card/article-card";
 
-export default function Scroller() {
+import type { BoxProps } from "@mui/material";
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface ScrollerProps extends BoxProps {}
+
+/**
+ * Infinite virtualised vertical article carousal also known as "Scroller"
+ * @returns
+ */
+export default function Scroller(props: ScrollerProps) {
+  const { sx } = props;
+
   const FETCH_BATCH_SIZE = 20; // Limited by max extracts returned in a single request
   const scrollerVListRef = useRef<VListHandle>(null);
 
@@ -36,8 +47,10 @@ export default function Scroller() {
 
   return (
     <Box
+      {...props}
       sx={{
         height: "100%",
+        ...sx,
       }}
     >
       <VList

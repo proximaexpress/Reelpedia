@@ -1,9 +1,12 @@
+import { useState } from "react";
+
 import { Box, useTheme } from "@mui/material";
 
+import SavedArticleModal from "~/components/saved/saved-article-modal";
 import Scroller from "~/components/scroller/scroller";
 import ScrollerActionBar from "~/components/scroller/scroller-action-bar";
 
-import type { JSX } from "react";
+import { type JSX } from "react";
 import type { Route } from "./+types/home";
 
 import "~/components/scroller/scroller.css";
@@ -16,8 +19,16 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+/**
+ * Homepage which houses the scroller related content
+ * @returns
+ */
 export default function Home(): JSX.Element {
   const theme = useTheme();
+
+  const [modalActive, setModalActive] = useState<Record<string, boolean>>({
+    savedArticleModal: false,
+  });
 
   return (
     <Box
@@ -41,6 +52,7 @@ export default function Home(): JSX.Element {
             zIndex: 1,
           },
         }}
+        setModalActive={setModalActive}
       />
 
       <Box
@@ -53,6 +65,11 @@ export default function Home(): JSX.Element {
       >
         <Scroller />
       </Box>
+
+      <SavedArticleModal
+        open={modalActive.savedArticleModal}
+        setModalActive={setModalActive}
+      />
     </Box>
   );
 }

@@ -133,7 +133,8 @@ type Story = StoryObj<typeof meta>;
 // TODO: Use a mocked provider when testing
 export const Default: Story = {
   args: {
-    active: true,
+    open: true,
+    setModalActive: () => console.log("modal closed"),
   },
   decorators: [
     (Story) => {
@@ -157,7 +158,8 @@ export const Default: Story = {
 
 export const Empty: Story = {
   args: {
-    active: true,
+    open: true,
+    setModalActive: () => console.log("modal closed"),
   },
   decorators: [
     (Story) => {

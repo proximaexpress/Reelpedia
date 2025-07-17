@@ -22,11 +22,12 @@ import { remove } from "~/features/saved/savedSlice";
 
 import type { Article } from "../article-card/article-card";
 import type { JSX } from "react";
+import type { ModalProps } from "@mui/material";
 
 import "~/components/scroller/scroller.css";
 
-interface SavedArticleModalProps {
-  active: boolean;
+export interface SavedArticleModalProps extends Omit<ModalProps, "children"> {
+  setModalActive: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
 }
 
 const CardContentNoBottomPadding = styled(CardContent)(`
@@ -35,10 +36,15 @@ const CardContentNoBottomPadding = styled(CardContent)(`
   }
 `);
 
+/**
+ * Modal exposing saved / bookmarked articles
+ * @param props Modal props
+ * @returns
+ */
 export default function SavedArticleModal(
   props: SavedArticleModalProps,
 ): JSX.Element {
-  const { active } = props;
+  const { sx, setModalActive } = props;
 
   const theme = useTheme();
 
@@ -47,15 +53,15 @@ export default function SavedArticleModal(
 
   return (
     <Modal
-      open={active}
-      //aria-labelledby="saved-article-modal-title"
-      //aria-describedby="saved-article-modal-title"
+      {...props}
       sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        ...sx,
       }}
     >
+      {/* Modal close button */}
       <Box sx={{ position: "relative" }}>
         <IconButton
           color="primary"
@@ -66,6 +72,12 @@ export default function SavedArticleModal(
             right: 0,
             zIndex: "1",
           }}
+          onClick={() => {
+            setModalActive((prev) => ({
+              ...prev,
+              savedArticleModal: !prev?.savedArticleModal,
+            }));
+          }}
         >
           <CloseIcon />
         </IconButton>
@@ -74,7 +86,6 @@ export default function SavedArticleModal(
           className="scroller-player"
           sx={{
             py: 2,
-            border: "1px solid",
             backgroundColor: theme.palette.background.default,
 
             "@media screen and (orientation: landscape)": {

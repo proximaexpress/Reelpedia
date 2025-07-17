@@ -27,6 +27,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  args: {
+    setModalActive: () => console.log("modal closed"),
+  },
   decorators: [
     (Story) => {
       const dispatch = useAppDispatch();
