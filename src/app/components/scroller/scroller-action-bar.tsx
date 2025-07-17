@@ -6,7 +6,7 @@ import {
   Stack,
   type StackProps,
   Typography,
-  useTheme,
+  styled,
 } from "@mui/material";
 
 import BookmarkAddedIcon from "@mui/icons-material/BookmarkAdded";
@@ -20,10 +20,35 @@ import type { Article } from "../article-card/article-card";
 
 type ScrollerActionBarProps = StackProps;
 
+/**
+ * Focusable interactive icon button with shaded background
+ */
+const IconButtonShaded = styled(IconButton)(({ theme }) => {
+  return {
+    position: "relative",
+    overflow: "hidden",
+    zIndex: "1",
+
+    "&:before": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      borderRadius: "50%",
+      background:
+        theme.palette.mode == "dark"
+          ? "rgba(128, 128, 128, 0.75)"
+          : "rgba(128, 128, 128, 0.75)",
+      filter: "blur(16px)",
+      zIndex: -1,
+    },
+  };
+});
+
 export default function ScrollerActionBar(props: ScrollerActionBarProps) {
   const { sx } = props;
-
-  const theme = useTheme();
 
   const savedArticles: Article[] = useAppSelector((state) => state.saved.value);
   const displayedArticle: Article | undefined = useAppSelector(
@@ -78,31 +103,10 @@ export default function ScrollerActionBar(props: ScrollerActionBarProps) {
             onMouseEnter={handlePopoverOpen}
             onMouseLeave={handlePopoverClose}
           >
-            <IconButton
+            <IconButtonShaded
               title="delete"
               size="large"
               aria-label="delete"
-              sx={{
-                position: "relative",
-                overflow: "hidden",
-                zIndex: "1",
-
-                "&:before": {
-                  content: '""',
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  borderRadius: "50%",
-                  background:
-                    theme.palette.mode == "dark"
-                      ? "rgba(128, 128, 128, 0.75)"
-                      : "rgba(128, 128, 128, 0.75)",
-                  filter: "blur(16px)",
-                  zIndex: -1,
-                },
-              }}
               onClick={() => {
                 if (!displayedArticle) {
                   return;
@@ -120,7 +124,7 @@ export default function ScrollerActionBar(props: ScrollerActionBarProps) {
               ) : (
                 <BookmarkAddedIcon />
               )}
-            </IconButton>
+            </IconButtonShaded>
 
             <Typography
               variant="subtitle2"
