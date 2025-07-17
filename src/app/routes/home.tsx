@@ -32,7 +32,19 @@ export default function Home(): JSX.Element {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      <ScrollerActionBar />
+      <ScrollerActionBar
+        sx={{
+          height: "calc(100vh - 96px)",
+          mt: "5%",
+
+          "@media screen and (orientation: portrait)": {
+            position: "absolute",
+            top: 0,
+            right: 0,
+            zIndex: 1,
+          },
+        }}
+      />
 
       <Box
         className="scroller-player"
