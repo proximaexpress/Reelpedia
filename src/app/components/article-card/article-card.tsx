@@ -2,8 +2,7 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 
 import ImageNotSupportedOutlinedIcon from "@mui/icons-material/ImageNotSupportedOutlined";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-
-import "~/components/scroller/scroller.css";
+import { useAppSelector } from "~/hooks/useStore";
 
 export interface Article {
   title: string;
@@ -15,12 +14,22 @@ export interface Article {
 interface ArticleCardProps extends Article {}
 
 export default function ArticleCard(props: ArticleCardProps) {
+  const device = useAppSelector((state) => state.ui.device);
+
   return (
     <Box
-      className="scroller-player"
       sx={{
+        // Generally bad practice to depend on window.innerHeight, however,
+        // this is probably the best way to compensate for mobile browsers.
+        height: device.type == "desktop" ? "100vh" : device.height + "px",
+        width: "100%",
         position: "relative",
         scrollSnapAlign: "start",
+
+        "@media screen and (orientation: landscape)": {
+          height: "calc(100vh - 96px)",
+          width: "calc((100vh - 96px) * 0.5625)",
+        },
       }}
     >
       {/* Background image */}
@@ -84,8 +93,8 @@ export default function ArticleCard(props: ArticleCardProps) {
               mb: 2,
               color: "white",
               display: "-webkit-box",
-              "-webkit-line-clamp": "6",
-              "-webkit-box-orient": "vertical",
+              WebkitLineClamp: "6",
+              WebkitBoxOrient: "vertical",
               overflow: "hidden",
             }}
           >

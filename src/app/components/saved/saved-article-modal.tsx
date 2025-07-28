@@ -24,8 +24,6 @@ import type { Article } from "../article-card/article-card";
 import type { JSX } from "react";
 import type { ModalProps } from "@mui/material";
 
-import "~/components/scroller/scroller.css";
-
 export interface SavedArticleModalProps extends Omit<ModalProps, "children"> {
   setModalActive: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
 }
@@ -48,6 +46,7 @@ export default function SavedArticleModal(
 
   const theme = useTheme();
 
+  const device = useAppSelector((state) => state.ui.device);
   const savedArticles: Article[] = useAppSelector((state) => state.saved.value);
   const dispatch = useAppDispatch();
 
@@ -67,8 +66,8 @@ export default function SavedArticleModal(
         ...sx,
       }}
     >
-      {/* Modal close button */}
       <Box sx={{ position: "relative" }}>
+        {/* Modal close button */}
         <IconButton
           color="primary"
           aria-label="close modal"
@@ -88,14 +87,18 @@ export default function SavedArticleModal(
           <CloseIcon />
         </IconButton>
 
+        {/* Card container */}
         <Stack
-          className="scroller-player"
           sx={{
-            py: 2,
+            // Generally bad practice to depend on window.innerHeight, however,
+            // this is probably the best way to compensate for mobile browsers.
+            height: device.type == "desktop" ? "100vh" : device.height + "px",
+            width: "100vw",
+            pt: 2,
             backgroundColor: theme.palette.background.paper,
 
             "@media screen and (orientation: landscape)": {
-              width: "calc((100vw - 96px) * 0.5625) !important",
+              width: "calc((100vw - 96px) * 0.8) !important",
               borderColor: theme.palette.divider,
               borderRadius: 4,
               boxShadow: 24,
