@@ -37,7 +37,7 @@ const IconButtonShaded = styled(IconButton)(({ theme }) => {
     overflow: "hidden",
     zIndex: "1",
 
-    "&:before": {
+    "&:after": {
       content: '""',
       position: "absolute",
       top: 0,
@@ -88,7 +88,6 @@ export default function ScrollerActionBar(props: ScrollerActionBarProps) {
       spacing={2}
       sx={{
         width: "80px",
-        height: "100vh",
         px: 1,
         pt: "5vh",
         overflow: "hidden",

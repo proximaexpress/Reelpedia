@@ -56,9 +56,9 @@ export default function Scroller(props: ScrollerProps) {
       <VList
         ref={scrollerVListRef}
         style={{
-          height: "100%",
           overflowY: "scroll",
           scrollSnapType: "y mandatory",
+          //scrollSnapStop: "always", // Doesn't work due to Virtua
           scrollPaddingTop: 0,
           scrollbarWidth: "none",
         }}
