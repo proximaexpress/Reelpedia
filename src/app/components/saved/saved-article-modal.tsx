@@ -98,6 +98,7 @@ export default function SavedArticleModal(
             backgroundColor: theme.palette.background.paper,
 
             "@media screen and (orientation: landscape)": {
+              height: "calc(100vh - 96px)",
               width: "calc((100vw - 96px) * 0.8) !important",
               borderColor: theme.palette.divider,
               borderRadius: 4,
@@ -128,7 +129,34 @@ export default function SavedArticleModal(
               variant="text"
               endIcon={<SaveAltIcon />}
               onClick={() => {
-                console.log(savedArticles);
+                // Export saved articles as a CSV file
+                const csvData = [
+                  ["Title", "Extract", "Image"],
+                  ...savedArticles.map((a) => [
+                    a.title,
+                    a.extract,
+                    a?.image ?? "",
+                  ]),
+                ];
+                const csvDataString = csvData
+                  .map((a) =>
+                    a.map((b) => `"${b.replaceAll('"', '""')}"`).join(","),
+                  )
+                  .join("\n");
+
+                const blob = new Blob([csvDataString], { type: "text/csv" });
+                const blobURL = URL.createObjectURL(blob);
+
+                const el = document.createElement("a");
+                el.href = blobURL;
+                el.download = "saved-articles.csv";
+                document.body.appendChild(el);
+                el.click();
+
+                setTimeout(() => {
+                  URL.revokeObjectURL(blobURL);
+                  document.body.removeChild(el);
+                }, 0);
               }}
             >
               Save
